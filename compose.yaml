@@ -1,0 +1,6 @@
+﻿services:
+  goldirantelbotworker:
+    image: goldirantelbotworker
+    build:
+      context: .
+      dockerfile: GoldIranTelBotworker/Dockerfile

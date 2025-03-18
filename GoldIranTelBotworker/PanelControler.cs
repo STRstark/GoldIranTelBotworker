@@ -62,14 +62,20 @@ public class PanelControler
         var responsdto = await response.Content.ReadAsAsync<InboundDto>();
         return JsonConvert.DeserializeObject<Setting>(responsdto.obj.settings)?.clients!;
     }
-    private string GenerateClient(string emailRemark, int TotalGb, int Month)
+    private string GeneraetSetting(string emailRemark, int TotalGb, int Month)
     {
         return "{\"clients\":[{\"id\":\"" + Guid.NewGuid().ToString() + "\",\"alterId\":0,\"email\":\"" + emailRemark + "\",\"limitIp\":2,\"totalGB\":" + TotalGb * Gb + ",\"expiryTime\":" + ((Month != 0) ? new DateTimeOffset(DateTime.UtcNow.AddMonths(Month)).AddDays(-1).ToUnixTimeMilliseconds() : 0 )+ ",\"enable\":true,\"tgId\":\"\",\"subId\":\"\"}]}";
     }
+    /*
+    private string GeneratestreamSettings()
+    public async Task<int> AddNewINbound()
+    {
+        
+    }*/
     public async Task<bool> AddClientToAdmin(Admins Admin, string emailRemark, int TotalGb, int Month)
     {
         await Login(Username, Password);
-        var body = new { id = Admin.InboundId, settings = GenerateClient(emailRemark, TotalGb, Month) };
+        var body = new { id = Admin.InboundId, settings = GeneraetSetting(emailRemark, TotalGb, Month) };
         JsonContent content = JsonContent.Create(body);
         var response = await Server.PostAsync(PanelBaseUrl + ActionPathes.First(x => x.Key == 11).Value , content);
         if (!response.IsSuccessStatusCode)
